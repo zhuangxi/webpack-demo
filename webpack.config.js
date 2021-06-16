@@ -6,13 +6,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var vueLoaderPlugin = require('vue-loader/lib/plugin')
 const devMode = process.argv.indexOf('--mode=production') === -1
 
-const os = require('os')
-const HappyPack = require('happypack')
-const happyTreadPool = HappyPack.ThreadPool({size: os.cpus().length})
-
+// const os = require('os')
+// const HappyPack = require('happypack')
+// const happyTreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 module.exports = {
-  
   // entry: ['@babel/polyfill', path.resolve(__dirname, './src/main.js')],
   entry: {
     main: path.resolve(__dirname, './src/main.js')
@@ -91,15 +89,16 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-        // {
-        //     loader: 'babel-loader',
-        //     options: {
-        //         presets: ['@babel/preset-env']
-        //     },
-        // },
-        {
-          loader: 'happypack/loader?id=happyBabel'
-        }],
+          {
+              loader: 'babel-loader',
+              options: {
+                  presets: ['@babel/preset-env']
+              },
+          },
+          // {
+          //   loader: 'happypack/loader?id=happyBabel'
+          // }
+        ],
         exclude: /node_modeule/
       }
     ],
@@ -114,20 +113,20 @@ module.exports = {
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
     new vueLoaderPlugin(),
-    new HappyPack({
-      id: 'happyBabel',
-      loaders: [
-        {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['@babel/preset-env']
-            ],
-            cacheDirectory: true
-          }
-        }
-      ],
-      threadPool: happyTreadPool
-    })
+    // new HappyPack({
+    //   id: 'happyBabel',
+    //   loaders: [
+    //     {
+    //       loader: 'babel-loader',
+    //       options: {
+    //         presets: [
+    //           ['@babel/preset-env']
+    //         ],
+    //         cacheDirectory: true
+    //       }
+    //     }
+    //   ],
+    //   threadPool: happyTreadPool
+    // })
   ]
 }
